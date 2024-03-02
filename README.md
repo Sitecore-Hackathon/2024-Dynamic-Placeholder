@@ -10,7 +10,6 @@
 ## Description
 ⟹ The AI Translator module for Sitecore 10.3 addresses the challenge of efficiently creating and managing multilingual content within the Sitecore CMS, focusing on English to Spanish translations. This is a critical requirement for businesses and organizations that want to cater to a diverse audience, ensuring that their digital content is accessible and relevant to people speaking different languages. Manual translation processes are time-consuming, resource-intensive, and prone to inconsistencies, limiting the ability to quickly update and deploy content across multiple market segments.
 
-    - How does this module solve it
 The module automates the translation of content items from English to Spanish, saving significant time and effort when managing multilingual content. It integrates with OpenAI's GPT-3 technology to ensure high-quality translations that maintain the original content's tone and context.
 
 
