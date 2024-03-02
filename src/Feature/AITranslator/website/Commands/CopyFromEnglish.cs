@@ -7,7 +7,7 @@ using Sitecore.Web.UI.Sheer;
 namespace DynamicPlaceholder.Feature.AITranslator.Commands
 {
     [Serializable]
-    public class AITranslateEngToSpa : Command
+    public class CopyFromEnglish : Command
     {
         /// <summary>
         /// Command in "Copy English to Spanish" option
@@ -33,14 +33,14 @@ namespace DynamicPlaceholder.Feature.AITranslator.Commands
             {
                 if (args.Result == "yes")
                 {
-                    Context.ClientPage.Start("aiTranslateEngToSpa", args);
+                    Context.ClientPage.Start("uiCopyFromEnglish", args);
                 }
             }
             else
             {
                 //Confirmation message to proceed with the process
                 var itemName = args.Parameters["name"];
-                string msg = $"Generating a Spanish version of the item:  {itemName} ";
+                string msg = $"Are you sure you want to copy the latest English content to the latest Spanish version for the item {itemName}?";
                 SheerResponse.Confirm(msg);
                 args.WaitForPostBack();
             }

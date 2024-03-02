@@ -1,9 +1,11 @@
-﻿using Newtonsoft.Json;
-using Sitecore.Data.Items;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using Sitecore.Configuration;
+using Newtonsoft.Json;
 using System.Threading;
+using Sitecore.Diagnostics;
+using Sitecore.Data.Items;
 
 public class ChatGPTApiClient
 {

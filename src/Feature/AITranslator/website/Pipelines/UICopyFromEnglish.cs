@@ -6,14 +6,10 @@ using Sitecore.Data.Items;
 using Sitecore.Diagnostics;
 using Sitecore.Layouts;
 using Sitecore.Web.UI.Sheer;
-using System.Text.Json;
-using System.Threading.Tasks;
-using System.Threading;
-using Newtonsoft.Json;
 
 namespace DynamicPlaceholder.Feature.AITranslator.Pipelines
 {
-    public class AITranslateEngToSpaPipeline 
+    public class UICopyFromEnglish
     {
         public void Execute(ClientPipelineArgs args)
         {
@@ -21,7 +17,7 @@ namespace DynamicPlaceholder.Feature.AITranslator.Pipelines
             {
                 //Get the item id as parameter
                 string itemInput = args.Parameters["id"];
-                Log.Debug($"Starting AI Translate From English to Spanish item: {itemInput}");
+                Log.Debug($"Starting UICopyFromEnglish item {itemInput}  ");
                 Assert.ArgumentNotNull(args, "args");
                 //Get the database as parameter
                 Database database = Factory.GetDatabase(args.Parameters["database"]);
@@ -29,7 +25,7 @@ namespace DynamicPlaceholder.Feature.AITranslator.Pipelines
                 //If the database is different to master display a message
                 if (database.Name != "master")
                 {
-                    SheerResponse.Alert("This process only runs in the master database", Array.Empty<string>());
+                    SheerResponse.Alert("This process only run in master database", Array.Empty<string>());
                     args.AbortPipeline();
                     return;
                 }
@@ -64,38 +60,33 @@ namespace DynamicPlaceholder.Feature.AITranslator.Pipelines
                 if (finalLayoutFieldEnglish == null)
                     return;
 
+                //Get the final layout field value from english
                 var finalLayoutDefinitionEnglish = LayoutDefinition.Parse(finalLayoutFieldEnglish.Value);
 
+                ////Copy values from enlish version to the new language version
+                //load a fields
                 englishVersion.Fields.ReadAll();
                 spanishVersion.Editing.BeginEdit();
-                var response = "";
-                var client = new ChatGPTApiClient();
                 foreach (Field field in englishVersion.Fields)
                 {
-                    //Make sure to get content from user fields and non-sitecore fields (usually start with double underscore)
+                    //Make sure to get content from used fields and non-sitecore fields (usually start with      double underscore)
                     if (field != null && !field.Key.StartsWith("__"))
                     {
                         //Include the Debug entry for the field
                         Log.Debug($"Field copied VersionAddedEvent {field.Key}");
-                        if (field.Type == "Single-Line Text" || field.Type == "Rich Text")
-                        {
-                            SheerResponse.Confirm("Found a field, generating...");
-                            var prompt = "Translate from English to Spanish. Keep the tone professional and aligned with marketing. Retain HTML tags, symbols, company names, and URLs unchanged. Text: " + field.Value;
-                            response = client.GenerateResponse(prompt);
-                            spanishVersion[field.Key] = response;
-                        }
+                        spanishVersion[field.Key] = englishVersion[field.Key];
                     }
                 }
                 finalLayoutFieldSpanish.Value = finalLayoutDefinitionEnglish.ToXml();
                 spanishVersion.Editing.EndEdit();
-                Log.Debug($"Finishing AI Translate From English to Spanish item: {itemInput} ");
-                SheerResponse.Confirm("Spanish Version generated successfully!");
+                Log.Debug($"Finishing UICopyFromEnglish item {itemInput}  ");
+                SheerResponse.Alert("This process finished sucessfully", Array.Empty<string>());
                 args.AbortPipeline();
                 return;              
             }
             catch (Exception ex)
             {
-                Log.Error("Error in AITranslateEngToSpaPipeline", ex,this);
+                Log.Error("Error in UICopyFromEnglish", ex,this);
                 SheerResponse.ShowError($"An error has ocurred", ex.Message);
             }
         }
