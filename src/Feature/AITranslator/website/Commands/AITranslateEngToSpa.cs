@@ -40,7 +40,7 @@ namespace DynamicPlaceholder.Feature.AITranslator.Commands
             {
                 //Confirmation message to proceed with the process
                 var itemName = args.Parameters["name"];
-                string msg = $"Generating a spanish version of the item {itemName} ";
+                string msg = $"Generating a Spanish version of the item:  {itemName} ";
                 SheerResponse.Confirm(msg);
                 args.WaitForPostBack();
             }

@@ -4,6 +4,8 @@ using System.Text;
 using Sitecore.Configuration;
 using Newtonsoft.Json;
 using System.Threading;
+using Sitecore.Diagnostics;
+using Sitecore.Data.Items;
 
 public class ChatGPTApiClient
 {
@@ -12,8 +14,10 @@ public class ChatGPTApiClient
 
     public ChatGPTApiClient()
     {
+        Sitecore.Data.Database master = Sitecore.Configuration.Factory.GetDatabase("master");
+        Item apiKeyItem = master.GetItem("{7827E662-E253-4E06-B827-73D36DD4CA30}");
         _httpClient = new HttpClient();
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Settings.GetSetting("AI-API-KEY"));
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKeyItem["API KEY"]);
         _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         
     }
@@ -28,7 +32,7 @@ public class ChatGPTApiClient
                     new { role = "user", content = prompt}
                 },
             temperature = 0.7,
-            max_tokens = 100
+            max_tokens = 1000
         };
 
         var jsonContent = JsonConvert.SerializeObject(requestData);
@@ -39,6 +43,7 @@ public class ChatGPTApiClient
         Thread.Sleep(3000);
         //Serialize string to json
         var serializedResponse = JsonConvert.DeserializeObject<dynamic>(responseString);
+
         var contentResponse = serializedResponse.choices[0].message.content.ToString();
         return(contentResponse);
 

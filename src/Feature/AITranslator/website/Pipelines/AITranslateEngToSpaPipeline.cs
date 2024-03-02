@@ -21,7 +21,7 @@ namespace DynamicPlaceholder.Feature.AITranslator.Pipelines
             {
                 //Get the item id as parameter
                 string itemInput = args.Parameters["id"];
-                Log.Debug($"Starting AI Translate From English to Spanish item {itemInput}  ");
+                Log.Debug($"Starting AI Translate From English to Spanish item: {itemInput}");
                 Assert.ArgumentNotNull(args, "args");
                 //Get the database as parameter
                 Database database = Factory.GetDatabase(args.Parameters["database"]);
@@ -64,14 +64,12 @@ namespace DynamicPlaceholder.Feature.AITranslator.Pipelines
                 if (finalLayoutFieldEnglish == null)
                     return;
 
-                //Get the final layout field value from english
                 var finalLayoutDefinitionEnglish = LayoutDefinition.Parse(finalLayoutFieldEnglish.Value);
 
-                ////Copy values from enlish version to the new language version
-                //load a fields
                 englishVersion.Fields.ReadAll();
                 spanishVersion.Editing.BeginEdit();
                 var response = "";
+                var client = new ChatGPTApiClient();
                 foreach (Field field in englishVersion.Fields)
                 {
                     //Make sure to get content from user fields and non-sitecore fields (usually start with double underscore)
@@ -79,27 +77,19 @@ namespace DynamicPlaceholder.Feature.AITranslator.Pipelines
                     {
                         //Include the Debug entry for the field
                         Log.Debug($"Field copied VersionAddedEvent {field.Key}");
-                        //Call to Chat GPT AI Service
-                        
-                       var client = new ChatGPTApiClient();
-       
-                        if (field.Type == "Single-Line Text")
+                        if (field.Type == "Single-Line Text" || field.Type == "Rich Text")
                         {
-                            var prompt = "Translate this text to Spanish: " + field.Value;
-                            SheerResponse.Alert(prompt, Array.Empty<string>());
+                            SheerResponse.Confirm("Found a field, generating...");
+                            var prompt = "Translate from English to Spanish. Keep the tone professional and aligned with marketing. Retain HTML tags, symbols, company names, and URLs unchanged. Text: " + field.Value;
                             response = client.GenerateResponse(prompt);
-                            //Wait for response from AI
-                            
-                            SheerResponse.Alert(response, Array.Empty<string>());
-                            //spanishVersion[field.Key] = englishVersion[field.Key];
                             spanishVersion[field.Key] = response;
                         }
                     }
                 }
                 finalLayoutFieldSpanish.Value = finalLayoutDefinitionEnglish.ToXml();
                 spanishVersion.Editing.EndEdit();
-                Log.Debug($"Finishing AI Translate From English to Spanish item {itemInput}  ");
-                SheerResponse.Alert(response, Array.Empty<string>());
+                Log.Debug($"Finishing AI Translate From English to Spanish item: {itemInput} ");
+                SheerResponse.Confirm("Spanish Version generated successfully!");
                 args.AbortPipeline();
                 return;              
             }
