@@ -6,10 +6,6 @@ using Sitecore.Data.Items;
 using Sitecore.Diagnostics;
 using Sitecore.Layouts;
 using Sitecore.Web.UI.Sheer;
-using System.Text.Json;
-using System.Threading.Tasks;
-using System.Threading;
-using Newtonsoft.Json;
 
 namespace DynamicPlaceholder.Feature.AITranslator.Pipelines
 {
@@ -75,11 +71,9 @@ namespace DynamicPlaceholder.Feature.AITranslator.Pipelines
                     //Make sure to get content from user fields and non-sitecore fields (usually start with double underscore)
                     if (field != null && !field.Key.StartsWith("__"))
                     {
-                        //Include the Debug entry for the field
                         Log.Debug($"Field copied VersionAddedEvent {field.Key}");
                         if (field.Type == "Single-Line Text" || field.Type == "Rich Text")
                         {
-                            SheerResponse.Confirm("Found a field, generating...");
                             var prompt = "Translate from English to Spanish. Keep the tone professional and aligned with marketing. Retain HTML tags, symbols, company names, and URLs unchanged. Text: " + field.Value;
                             response = client.GenerateResponse(prompt);
                             spanishVersion[field.Key] = response;
@@ -89,7 +83,7 @@ namespace DynamicPlaceholder.Feature.AITranslator.Pipelines
                 finalLayoutFieldSpanish.Value = finalLayoutDefinitionEnglish.ToXml();
                 spanishVersion.Editing.EndEdit();
                 Log.Debug($"Finishing AI Translate From English to Spanish item: {itemInput} ");
-                SheerResponse.Confirm("Spanish Version generated successfully!");
+                SheerResponse.Alert("Spanish Version generated successfully!");
                 args.AbortPipeline();
                 return;              
             }

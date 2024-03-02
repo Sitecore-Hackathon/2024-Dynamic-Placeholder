@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Specialized;
-using Sitecore;
+﻿using Sitecore;
 using Sitecore.Shell.Framework.Commands;
 using Sitecore.Web.UI.Sheer;
+using System;
+using System.Collections.Specialized;
 
 namespace DynamicPlaceholder.Feature.AITranslator.Commands
 {
+    /// <summary>
+    /// Command bound to the menu for AI Translation
+    /// </summary>
     [Serializable]
     public class AITranslateEngToSpa : Command
     {
-        /// <summary>
-        /// Command in "Copy English to Spanish" option
-        /// </summary>
-        /// <param name="context"></param>
         public override void Execute(CommandContext context)
         {
             if (context.Items.Length != 1 || context.Items[0] == null) return;
@@ -38,10 +37,9 @@ namespace DynamicPlaceholder.Feature.AITranslator.Commands
             }
             else
             {
-                //Confirmation message to proceed with the process
                 var itemName = args.Parameters["name"];
                 string msg = $"Generating a Spanish version of the item:  {itemName} ";
-                SheerResponse.Confirm(msg);
+                SheerResponse.Alert(msg);
                 args.WaitForPostBack();
             }
         }
