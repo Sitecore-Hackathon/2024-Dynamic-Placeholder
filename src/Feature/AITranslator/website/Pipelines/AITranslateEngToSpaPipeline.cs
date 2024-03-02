@@ -6,10 +6,14 @@ using Sitecore.Data.Items;
 using Sitecore.Diagnostics;
 using Sitecore.Layouts;
 using Sitecore.Web.UI.Sheer;
+using System.Text.Json;
+using System.Threading.Tasks;
+using System.Threading;
+using Newtonsoft.Json;
 
 namespace DynamicPlaceholder.Feature.AITranslator.Pipelines
 {
-    public class AITranslateEngToSpaPipeline
+    public class AITranslateEngToSpaPipeline 
     {
         public void Execute(ClientPipelineArgs args)
         {
@@ -67,20 +71,35 @@ namespace DynamicPlaceholder.Feature.AITranslator.Pipelines
                 //load a fields
                 englishVersion.Fields.ReadAll();
                 spanishVersion.Editing.BeginEdit();
+                var response = "";
                 foreach (Field field in englishVersion.Fields)
                 {
-                    //Make sure to get content from used fields and non-sitecore fields (usually start with double underscore)
+                    //Make sure to get content from user fields and non-sitecore fields (usually start with double underscore)
                     if (field != null && !field.Key.StartsWith("__"))
                     {
                         //Include the Debug entry for the field
                         Log.Debug($"Field copied VersionAddedEvent {field.Key}");
-                        spanishVersion[field.Key] = englishVersion[field.Key];
+                        //Call to Chat GPT AI Service
+                        
+                       var client = new ChatGPTApiClient();
+       
+                        if (field.Type == "Single-Line Text")
+                        {
+                            var prompt = "Translate this text to Spanish: " + field.Value;
+                            SheerResponse.Alert(prompt, Array.Empty<string>());
+                            response = client.GenerateResponse(prompt);
+                            //Wait for response from AI
+                            
+                            SheerResponse.Alert(response, Array.Empty<string>());
+                            //spanishVersion[field.Key] = englishVersion[field.Key];
+                            spanishVersion[field.Key] = response;
+                        }
                     }
                 }
                 finalLayoutFieldSpanish.Value = finalLayoutDefinitionEnglish.ToXml();
                 spanishVersion.Editing.EndEdit();
                 Log.Debug($"Finishing AI Translate From English to Spanish item {itemInput}  ");
-                SheerResponse.Alert("Success", Array.Empty<string>());
+                SheerResponse.Alert(response, Array.Empty<string>());
                 args.AbortPipeline();
                 return;              
             }

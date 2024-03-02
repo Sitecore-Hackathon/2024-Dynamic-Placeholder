@@ -33,14 +33,14 @@ namespace DynamicPlaceholder.Feature.AITranslator.Commands
             {
                 if (args.Result == "yes")
                 {
-                    Context.ClientPage.Start("uiCopyFromEnglish", args);
+                    Context.ClientPage.Start("aiTranslateEngToSpa", args);
                 }
             }
             else
             {
                 //Confirmation message to proceed with the process
                 var itemName = args.Parameters["name"];
-                string msg = $"Are you sure you want to copy the latest English content to the latest Spanish version for the item {itemName}?";
+                string msg = $"Generating a spanish version of the item {itemName} ";
                 SheerResponse.Confirm(msg);
                 args.WaitForPostBack();
             }
