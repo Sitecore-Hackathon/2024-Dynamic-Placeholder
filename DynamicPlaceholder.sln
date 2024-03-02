@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.34601.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Feature", "Feature", "{AAFD6236-806F-43D2-9FB6-81D4EBF3C515}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Foundation", "Foundation", "{07692B5C-798C-4C27-B9D2-FCB31A09393D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Project", "Project", "{82F1F0DC-1F30-4800-BC9C-477A4A47BFC7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configurations", "Configurations", "{8550FC3D-54D2-4D7A-B924-0487FE398F40}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		nuget.config = nuget.config
+		sitecore.json = sitecore.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Website", "Website", "{4C076BF9-1DE6-4433-8DD7-7FB5C2088201}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AITranslator", "AITranslator", "{67F56619-7158-42F8-8FFA-E92A049874DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicPlaceholder.Feature.AITranslator", "src\Feature\AITranslator\website\DynamicPlaceholder.Feature.AITranslator.csproj", "{ACB65818-3E9F-4DF6-8F14-09E346876139}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ACB65818-3E9F-4DF6-8F14-09E346876139}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACB65818-3E9F-4DF6-8F14-09E346876139}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACB65818-3E9F-4DF6-8F14-09E346876139}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACB65818-3E9F-4DF6-8F14-09E346876139}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{67F56619-7158-42F8-8FFA-E92A049874DF} = {AAFD6236-806F-43D2-9FB6-81D4EBF3C515}
+		{ACB65818-3E9F-4DF6-8F14-09E346876139} = {67F56619-7158-42F8-8FFA-E92A049874DF}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {25978206-A2AB-416F-AE7E-AEC2BA217729}
+	EndGlobalSection
+EndGlobal
