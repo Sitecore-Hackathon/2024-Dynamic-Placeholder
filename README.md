@@ -44,7 +44,6 @@ The module automates the translation of content items from English to Spanish, s
 ### Configuration
 ⟹ If there are any custom configuration that has to be set manually then remember to add all details here.
 
-_Remove this subsection if your entry does not require any configuration that is not fully covered in the installation instructions already_
 
 ## Usage instructions
 This module is designed to automatically create a Spanish version of content items, exclusively within the master database. It copies all fields and renderings from the English version to the Spanish version, translating only the fields of types: Single-Line Text, Multiline Text, and Rich Text.
